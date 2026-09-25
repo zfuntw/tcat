@@ -1,0 +1,41 @@
+<%
+  const v = values[f.name];
+  const id = 'f_' + f.name;
+%>
+<div class="field field-<%= f.type %>">
+  <% if (f.type === 'checkbox') { %>
+    <label class="check"><input type="checkbox" name="<%= f.name %>" value="1" <%= v ? 'checked' : '' %>> <%= f.label %></label>
+  <% } else { %>
+    <label for="<%= id %>"><%= f.label %></label>
+    <% if (f.type === 'textarea') { %>
+      <textarea id="<%= id %>" name="<%= f.name %>" rows="4"><%= v || '' %></textarea>
+    <% } else if (f.type === 'code' || f.type === 'map') { %>
+      <textarea id="<%= id %>" name="<%= f.name %>" rows="5" class="mono"><%= v || '' %></textarea>
+    <% } else if (f.type === 'pairs') { %>
+      <textarea id="<%= id %>" name="<%= f.name %>" rows="6" class="mono"><%= (v || []).map(function (x) { return x[f.keys[0]] + '|' + x[f.keys[1]]; }).join('\n') %></textarea>
+    <% } else if (f.type === 'richtext') { %>
+      <div class="editor" data-target="<%= id %>"></div>
+      <textarea id="<%= id %>" name="<%= f.name %>" hidden><%= v || '' %></textarea>
+    <% } else if (f.type === 'color') { %>
+      <div class="color-row"><input type="color" id="<%= id %>" name="<%= f.name %>" value="<%= v || '#000000' %>"><code><%= v %></code></div>
+    <% } else if (f.type === 'select') { %>
+      <select id="<%= id %>" name="<%= f.name %>">
+        <% f.options.forEach(function (o) { %><option value="<%= o[0] %>" <%= o[0] === v ? 'selected' : '' %>><%= o[1] %></option><% }) %>
+      </select>
+    <% } else if (f.type === 'image') { %>
+      <div class="image-field">
+        <div class="preview"><% if (v) { %><img src="<%= v %>" alt=""><% } else { %><span>尚未設定</span><% } %></div>
+        <div>
+          <input type="file" name="<%= f.name %>File" accept="image/*" data-preview>
+          <input type="text" name="<%= f.name %>" value="<%= v || '' %>" placeholder="或貼上圖片網址 / 從媒體庫複製">
+          <% if (v) { %><label class="check small"><input type="checkbox" name="<%= f.name %>Remove" value="1"> 移除圖片</label><% } %>
+        </div>
+      </div>
+    <% } else if (f.type === 'number') { %>
+      <input type="number" id="<%= id %>" name="<%= f.name %>" value="<%= v === undefined ? '' : v %>">
+    <% } else { %>
+      <input type="text" id="<%= id %>" name="<%= f.name %>" value="<%= v || '' %>">
+    <% } %>
+  <% } %>
+  <% if (f.help) { %><small class="help"><%= f.help %></small><% } %>
+</div>

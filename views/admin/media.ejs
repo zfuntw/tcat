@@ -1,0 +1,29 @@
+<%- include('_top') %>
+<section class="panel">
+  <h2>上傳圖片</h2>
+  <form method="post" enctype="multipart/form-data" class="inline-form">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <input type="file" name="files" accept="image/*" multiple required>
+    <button class="btn primary">上傳</button>
+  </form>
+  <small class="help">單檔上限 8MB。點「複製網址」後可貼到任何圖片欄位。</small>
+</section>
+<div class="media-grid">
+  <% if (!media.length) { %><p class="muted">尚無檔案</p><% } %>
+  <% media.forEach(function (m) { %>
+    <div class="media-item">
+      <img src="<%= m.url %>" alt="<%= m.name %>" loading="lazy">
+      <div class="media-meta">
+        <span title="<%= m.name %>"><%= m.name %></span>
+        <small><%= Math.round(m.size / 1024) %> KB</small>
+      </div>
+      <div class="media-actions">
+        <button type="button" class="link" data-copy-url="<%= m.url %>">複製網址</button>
+        <form method="post" action="/admin/media/<%= m.id %>/delete" data-confirm="刪除後，已使用此圖片的頁面將無法顯示，確定刪除？">
+          <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="link danger">刪除</button>
+        </form>
+      </div>
+    </div>
+  <% }) %>
+</div>
+<%- include('_bottom') %>

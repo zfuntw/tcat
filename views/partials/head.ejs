@@ -1,0 +1,50 @@
+<%
+  const _title = (typeof pageTitle !== 'undefined' && pageTitle) ? `${pageTitle}｜${site.siteName}` : `${site.siteName}${site.tagline ? '｜' + site.tagline : ''}`;
+  const _desc = (typeof metaDescription !== 'undefined' && metaDescription) ? metaDescription : site.metaDescription;
+  const _og = (typeof ogImage !== 'undefined' && ogImage) ? ogImage : site.ogImage;
+  const _ga = String(site.gaId || '').replace(/[^A-Za-z0-9-]/g, '');
+  const _gtm = String(site.gtmId || '').replace(/[^A-Za-z0-9-]/g, '');
+  const _px = String(site.metaPixelId || '').replace(/[^0-9]/g, '');
+%>
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= _title %></title>
+  <meta name="description" content="<%= _desc %>">
+  <% if (site.metaKeywords) { %><meta name="keywords" content="<%= site.metaKeywords %>"><% } %>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="<%= _title %>">
+  <meta property="og:description" content="<%= _desc %>">
+  <meta property="og:site_name" content="<%= site.siteName %>">
+  <% if (_og) { %><meta property="og:image" content="<%= _og %>"><% } %>
+  <% if (site.favicon) { %><link rel="icon" href="<%= site.favicon %>"><% } %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    :root {
+      --primary: <%= site.primaryColor %>;
+      --accent: <%= site.accentColor %>;
+      --bg: <%= site.bgColor %>;
+      --text: <%= site.textColor %>;
+      --font: <%- /^[\w\s',-]+$/.test(site.fontFamily) ? site.fontFamily : 'sans-serif' %>;
+      --font-heading: <%- /^[\w\s',-]+$/.test(site.headingFont) ? site.headingFont : 'serif' %>;
+    }
+  </style>
+  <% if (_gtm) { %>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','<%= _gtm %>');</script>
+  <% } %>
+  <% if (_ga) { %>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= _ga %>"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','<%= _ga %>');</script>
+  <% } %>
+  <% if (_px) { %>
+  <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','<%= _px %>');fbq('track','PageView');</script>
+  <% } %>
+  <%- site.customHeadCode || '' %>
+</head>
+<body>
+<% if (_gtm) { %><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= _gtm %>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><% } %>

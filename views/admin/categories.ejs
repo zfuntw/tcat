@@ -1,0 +1,36 @@
+<%- include('_top') %>
+<section class="panel">
+  <h2>新增分類</h2>
+  <form method="post" class="inline-form">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <input name="name" placeholder="分類名稱" required>
+    <input name="slug" placeholder="網址代稱（選填，例如 marketing）">
+    <button class="btn primary">新增</button>
+  </form>
+</section>
+<section class="panel table-wrap">
+  <table>
+    <thead><tr><th>名稱</th><th>網址代稱</th><th>文章數</th><th></th></tr></thead>
+    <tbody>
+      <% categories.forEach(function (c) { %>
+        <tr>
+          <td colspan="2">
+            <form method="post" action="/admin/categories/<%= c.id %>" class="inline-form">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <input name="name" value="<%= c.name %>" required>
+              <input name="slug" value="<%= c.slug %>">
+              <button class="btn small">更新</button>
+            </form>
+          </td>
+          <td><%= counts[c.id] || 0 %></td>
+          <td class="actions">
+            <form method="post" action="/admin/categories/<%= c.id %>/delete" data-confirm="確定刪除「<%= c.name %>」？">
+              <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="link danger">刪除</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+<%- include('_bottom') %>

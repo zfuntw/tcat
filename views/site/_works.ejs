@@ -1,0 +1,13 @@
+<div class="work-grid">
+  <% works.forEach(function (w) { %>
+    <a class="work-card reveal" href="/works/<%= encodeURIComponent(w.slug) %>">
+      <div class="work-thumb">
+        <% if (w.image) { %><img src="<%= w.image %>" alt="<%= w.title %>" loading="lazy"><% } else { %><div class="ph"><span><%= w.title.slice(0, 1) %></span></div><% } %>
+      </div>
+      <div class="work-info">
+        <span class="tag"><%= w.category %></span>
+        <h3><%= w.title %></h3>
+      </div>
+    </a>
+  <% }) %>
+</div>

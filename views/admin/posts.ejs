@@ -1,0 +1,29 @@
+<%- include('_top') %>
+<div class="toolbar">
+  <div class="tabs">
+    <a href="/admin/posts" class="<%= !status ? 'active' : '' %>">全部</a>
+    <a href="/admin/posts?status=published" class="<%= status === 'published' ? 'active' : '' %>">已發布</a>
+    <a href="/admin/posts?status=draft" class="<%= status === 'draft' ? 'active' : '' %>">草稿</a>
+  </div>
+  <form method="get" class="inline"><input type="hidden" name="status" value="<%= status %>"><input type="search" name="q" value="<%= q %>" placeholder="搜尋標題"></form>
+  <a class="btn primary" href="/admin/posts/new">＋ 新增文章</a>
+</div>
+<div class="panel table-wrap">
+  <table>
+    <thead><tr><th>標題</th><th>分類</th><th>狀態</th><th>發布時間</th><th>瀏覽</th><th></th></tr></thead>
+    <tbody>
+      <% if (!posts.length) { %><tr><td colspan="6" class="muted">沒有文章</td></tr><% } %>
+      <% posts.forEach(function (p) { const c = categories.find(function (x) { return x.id === p.categoryId; }); %>
+        <tr>
+          <td><a href="/admin/posts/<%= p.id %>" class="strong"><%= p.title %></a><% if (p.featured) { %> <span class="pill">精選</span><% } %></td>
+          <td><%= c ? c.name : '—' %></td>
+          <td><span class="pill <%= p.status %>"><%= p.status === 'published' ? (new Date(p.publishedAt) > new Date() ? '排程中' : '已發布') : '草稿' %></span></td>
+          <td><%= h.formatDate(p.publishedAt) %></td>
+          <td><%= p.views || 0 %></td>
+          <td class="actions"><a href="/blog/<%= encodeURIComponent(p.slug) %>" target="_blank">檢視</a><a href="/admin/posts/<%= p.id %>">編輯</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('_bottom') %>

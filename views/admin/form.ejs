@@ -1,0 +1,22 @@
+<%- include('_top') %>
+<form method="post" action="<%= action %>" enctype="multipart/form-data" class="cms-form">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <% schema.forEach(function (section) { %>
+    <section class="panel">
+      <h2><%= section.title %></h2>
+      <% section.fields.forEach(function (f) { %><%- include('_field', { f, values }) %><% }) %>
+    </section>
+  <% }) %>
+  <div class="save-bar">
+    <% if (typeof back !== 'undefined' && back) { %><a class="btn" href="<%= back %>">← 返回列表</a><% } %>
+    <% if (typeof viewUrl !== 'undefined' && viewUrl) { %><a class="btn" href="<%= viewUrl %>" target="_blank">在網站上查看 ↗</a><% } %>
+    <button class="btn primary">儲存</button>
+  </div>
+</form>
+<% if (typeof deleteAction !== 'undefined' && deleteAction) { %>
+<form method="post" action="<%= deleteAction %>" data-confirm="確定要刪除嗎？此動作無法復原。" class="danger-zone">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <button class="btn danger">刪除</button>
+</form>
+<% } %>
+<%- include('_bottom') %>

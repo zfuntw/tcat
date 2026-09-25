@@ -1,0 +1,14 @@
+<%- include('../partials/header') %>
+<%- include('_pagehead', { title: '作品集', sub: 'Works' }) %>
+<section class="section">
+  <div class="container">
+    <% if (cats.length > 1) { %>
+    <div class="filter-bar">
+      <a href="/works" class="<%= !active ? 'active' : '' %>">全部</a>
+      <% cats.forEach(function (c) { %><a href="/works?category=<%= encodeURIComponent(c) %>" class="<%= active === c ? 'active' : '' %>"><%= c %></a><% }) %>
+    </div>
+    <% } %>
+    <% if (works.length) { %><%- include('_works', { works }) %><% } else { %><p class="empty">目前沒有作品。</p><% } %>
+  </div>
+</section>
+<%- include('../partials/footer') %>

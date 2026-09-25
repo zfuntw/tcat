@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+<%- include('_pagehead', { title: heading, sub: 'Journal' }) %>
+<section class="section">
+  <div class="container blog-layout">
+    <div>
+      <% if (posts.length) { %>
+        <%- include('_posts', { posts, categoryOf }) %>
+      <% } else { %><p class="empty">目前沒有符合的文章。</p><% } %>
+      <% if (totalPages > 1) { %>
+      <nav class="pager">
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %><%= q ? '&q=' + encodeURIComponent(q) : '' %>" class="<%= i === page ? 'active' : '' %>"><%= i %></a>
+        <% } %>
+      </nav>
+      <% } %>
+    </div>
+    <aside class="sidebar">
+      <form action="/blog" method="get" class="search">
+        <input type="search" name="q" value="<%= q %>" placeholder="搜尋文章…" aria-label="搜尋文章">
+      </form>
+      <h4>文章分類</h4>
+      <ul>
+        <li><a href="/blog" class="<%= !activeCat ? 'active' : '' %>">全部文章</a></li>
+        <% categories.forEach(function (c) { %>
+          <li><a href="/blog/category/<%= encodeURIComponent(c.slug) %>" class="<%= activeCat && activeCat.id === c.id ? 'active' : '' %>"><%= c.name %></a></li>
+        <% }) %>
+      </ul>
+    </aside>
+  </div>
+</section>
+<%- include('../partials/footer') %>

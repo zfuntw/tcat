@@ -1,0 +1,32 @@
+<%- include('_top') %>
+<div class="stat-cards">
+  <a href="/admin/posts?status=published" class="stat-card"><strong><%= stats.posts %></strong>已發布文章</a>
+  <a href="/admin/posts?status=draft" class="stat-card"><strong><%= stats.drafts %></strong>草稿</a>
+  <a href="/admin/works" class="stat-card"><strong><%= stats.works %></strong>作品</a>
+  <a href="/admin/messages" class="stat-card"><strong><%= stats.messages %></strong>聯絡訊息<% if (unread) { %><em><%= unread %> 則未讀</em><% } %></a>
+</div>
+<div class="quick">
+  <a class="btn primary" href="/admin/posts/new">＋ 寫新文章</a>
+  <a class="btn" href="/admin/works/new">＋ 新增作品</a>
+  <a class="btn" href="/admin/edit/home">編輯首頁</a>
+</div>
+<div class="two-col">
+  <section class="panel">
+    <h2>最新聯絡訊息</h2>
+    <% if (!messages.length) { %><p class="muted">尚無訊息</p><% } %>
+    <ul class="list">
+      <% messages.forEach(function (m) { %>
+        <li><a href="/admin/messages/<%= m.id %>"><% if (!m.read) { %><b class="dot"></b><% } %><%= m.name %>｜<%= m.subject || '一般詢問' %></a><span class="muted"><%= h.formatDate(m.createdAt) %></span></li>
+      <% }) %>
+    </ul>
+  </section>
+  <section class="panel">
+    <h2>熱門文章（瀏覽數）</h2>
+    <ul class="list">
+      <% topPosts.forEach(function (p) { %>
+        <li><a href="/admin/posts/<%= p.id %>"><%= p.title %></a><span class="muted"><%= p.views || 0 %></span></li>
+      <% }) %>
+    </ul>
+  </section>
+</div>
+<%- include('_bottom') %>

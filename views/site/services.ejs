@@ -1,0 +1,16 @@
+<%- include('../partials/header') %>
+<%- include('_pagehead', { title: '服務項目', sub: 'Services' }) %>
+<section class="section">
+  <div class="container">
+    <div class="section-head"><p><%= home.servicesSubtitle %></p></div>
+    <%- include('_services', { services }) %>
+  </div>
+</section>
+<section class="cta">
+  <div class="container">
+    <h2><%= home.ctaTitle %></h2>
+    <p><%= home.ctaText %></p>
+    <a class="btn btn-accent" href="<%= h.safeUrl(home.ctaButtonUrl) %>"><%= home.ctaButtonText || '聯絡我們' %></a>
+  </div>
+</section>
+<%- include('../partials/footer') %>

@@ -1,0 +1,14 @@
+<div class="post-grid">
+  <% posts.forEach(function (p) { const c = categoryOf(p); %>
+    <a class="post-card reveal" href="/blog/<%= encodeURIComponent(p.slug) %>">
+      <div class="post-thumb">
+        <% if (p.cover) { %><img src="<%= p.cover %>" alt="<%= p.title %>" loading="lazy"><% } else { %><div class="ph"><span><%= p.title.slice(0, 1) %></span></div><% } %>
+      </div>
+      <div class="post-body">
+        <div class="post-meta"><% if (c) { %><span class="tag"><%= c.name %></span><% } %><time><%= h.formatDate(p.publishedAt) %></time></div>
+        <h3><%= p.title %></h3>
+        <p><%= p.excerpt || h.stripTags(p.content).slice(0, 80) %></p>
+      </div>
+    </a>
+  <% }) %>
+</div>

@@ -1,0 +1,45 @@
+<%- include('../partials/header') %>
+<%- include('_pagehead', { title: page.title, sub: page.subtitle }) %>
+<section class="section">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <p class="lead"><%- h.nl2br(page.intro) %></p>
+      <ul>
+        <% if (site.email) { %><li><strong>Email</strong><a href="mailto:<%= site.email %>"><%= site.email %></a></li><% } %>
+        <% if (site.phone) { %><li><strong>電話</strong><a href="tel:<%= site.phone.replace(/[^\d+]/g, '') %>"><%= site.phone %></a></li><% } %>
+        <% if (site.address) { %><li><strong>地址</strong><%= site.address %></li><% } %>
+        <% if (site.businessHours) { %><li><strong>時間</strong><%= site.businessHours %></li><% } %>
+        <% if (site.lineUrl) { %><li><strong>LINE</strong><a href="<%= h.safeUrl(site.lineUrl) %>" target="_blank" rel="noopener">加入好友</a></li><% } %>
+      </ul>
+    </div>
+    <% if (page.showForm) { %>
+    <div class="contact-form">
+      <% if (sent) { %>
+        <div class="notice success" data-lead>感謝你的來信！我們會盡快與你聯繫。</div>
+      <% } %>
+      <% if (error) { %><div class="notice error"><%= error %></div><% } %>
+      <form method="post" action="/contact">
+        <div class="form-row">
+          <label>姓名 *<input name="name" required maxlength="100"></label>
+          <label>Email *<input type="email" name="email" required maxlength="200"></label>
+        </div>
+        <div class="form-row">
+          <label>電話<input name="phone" maxlength="50"></label>
+          <label>需求類型
+            <select name="subject">
+              <option value="">請選擇</option>
+              <% services.forEach(function (s) { %><option><%= s.title %></option><% }) %>
+              <option>其他</option>
+            </select>
+          </label>
+        </div>
+        <label>訊息內容 *<textarea name="message" rows="6" required maxlength="5000"></textarea></label>
+        <label class="hp" aria-hidden="true">網站<input name="website" tabindex="-1" autocomplete="off"></label>
+        <button class="btn btn-accent" type="submit">送出</button>
+      </form>
+    </div>
+    <% } %>
+  </div>
+  <% if (page.mapEmbed) { %><div class="container map"><%- page.mapEmbed %></div><% } %>
+</section>
+<%- include('../partials/footer') %>

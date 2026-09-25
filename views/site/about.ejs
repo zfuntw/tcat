@@ -1,0 +1,19 @@
+<%- include('../partials/header') %>
+<%- include('_pagehead', { title: page.title, sub: page.subtitle, image: page.image }) %>
+<section class="section">
+  <div class="container narrow prose reveal"><%- page.content %></div>
+</section>
+<% if (home.showStats && home.stats.length) { %>
+<section class="stats">
+  <div class="container stats-grid">
+    <% home.stats.forEach(function (s) { %><div class="stat"><strong><%= s.number %></strong><span><%= s.label %></span></div><% }) %>
+  </div>
+</section>
+<% } %>
+<section class="cta">
+  <div class="container">
+    <h2><%= home.ctaTitle %></h2>
+    <a class="btn btn-accent" href="<%= h.safeUrl(home.ctaButtonUrl) %>"><%= home.ctaButtonText || '聯絡我們' %></a>
+  </div>
+</section>
+<%- include('../partials/footer') %>

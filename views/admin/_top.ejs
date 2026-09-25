@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="csrf" content="<%= csrf %>">
+  <title><%= title %>｜後台管理</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<div class="admin">
+  <aside class="side" id="side">
+    <div class="side-brand"><%= site.siteName %><small>後台管理</small></div>
+    <nav>
+      <% const nav = [
+        ['/admin', '📊', '儀表板'],
+        ['group', '', '內容'],
+        ['/admin/posts', '📝', '文章管理'],
+        ['/admin/categories', '🏷️', '文章分類'],
+        ['/admin/works', '🖼️', '作品集'],
+        ['/admin/services', '🧩', '服務項目'],
+        ['group', '', '頁面'],
+        ['/admin/edit/home', '🏠', '首頁內容'],
+        ['/admin/edit/about', '👋', '關於我們'],
+        ['/admin/edit/contact', '✉️', '聯絡我們'],
+        ['group', '', '管理'],
+        ['/admin/messages', '💬', '聯絡訊息'],
+        ['/admin/media', '📁', '媒體庫'],
+        ['/admin/edit/settings', '⚙️', '網站設定'],
+        ['/admin/account', '🔒', '帳號設定']
+      ];
+      const p = currentPath.replace(/\/$/, ''); %>
+      <% nav.forEach(function (n) { if (n[0] === 'group') { %><div class="side-group"><%= n[2] %></div><% } else {
+           const active = n[0] === '/admin' ? p === '/admin' : p.startsWith(n[0]); %>
+        <a href="<%= n[0] %>" class="<%= active ? 'active' : '' %>"><span><%= n[1] %></span><%= n[2] %><% if (n[0] === '/admin/messages' && unread) { %><b class="badge"><%= unread %></b><% } %></a>
+      <% } }) %>
+    </nav>
+    <div class="side-foot">
+      <a href="/" target="_blank">↗ 查看網站</a>
+      <form method="post" action="/admin/logout"><input type="hidden" name="_csrf" value="<%= csrf %>"><button>登出</button></form>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button class="menu-btn" onclick="document.getElementById('side').classList.toggle('open')" aria-label="選單">☰</button>
+      <h1><%= title %></h1>
+      <span class="who"><%= user.username %></span>
+    </header>
+    <div class="content">
+      <% if (flash) { %><div class="flash <%= flash.type %>"><%= flash.text %></div><% } %>

@@ -1,0 +1,40 @@
+<%- include('../partials/header') %>
+<article class="article">
+  <header class="article-head container narrow">
+    <% if (isDraft) { %><div class="draft-banner">草稿預覽（僅管理員可見）</div><% } %>
+    <div class="post-meta">
+      <% if (category) { %><a class="tag" href="/blog/category/<%= encodeURIComponent(category.slug) %>"><%= category.name %></a><% } %>
+      <time><%= h.formatDate(post.publishedAt) %></time>
+      <% if (post.author) { %><span>・<%= post.author %></span><% } %>
+    </div>
+    <h1><%= post.title %></h1>
+  </header>
+  <% if (post.cover) { %><div class="container narrow"><img class="detail-cover" src="<%= post.cover %>" alt="<%= post.title %>"></div><% } %>
+  <div class="container narrow prose"><%- post.content %></div>
+  <div class="container narrow">
+    <% if ((post.tags || []).length) { %>
+    <div class="tags">
+      <% post.tags.forEach(function (t) { %><a href="/blog/tag/<%= encodeURIComponent(t) %>">#<%= t %></a><% }) %>
+    </div>
+    <% } %>
+    <div class="share">
+      分享：
+      <a href="https://www.facebook.com/sharer/sharer.php?u=" data-share="fb" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://social-plugins.line.me/lineit/share?url=" data-share="line" target="_blank" rel="noopener">LINE</a>
+      <button type="button" data-copy>複製連結</button>
+    </div>
+    <nav class="post-nav">
+      <div><% if (prev) { %><a href="/blog/<%= encodeURIComponent(prev.slug) %>">← <%= prev.title %></a><% } %></div>
+      <div><% if (next) { %><a href="/blog/<%= encodeURIComponent(next.slug) %>"><%= next.title %> →</a><% } %></div>
+    </nav>
+  </div>
+</article>
+<% if (related.length) { %>
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head"><h2>相關文章</h2></div>
+    <%- include('_posts', { posts: related, categoryOf: function () { return category; } }) %>
+  </div>
+</section>
+<% } %>
+<%- include('../partials/footer') %>

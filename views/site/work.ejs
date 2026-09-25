@@ -1,0 +1,19 @@
+<%- include('../partials/header') %>
+<%- include('_pagehead', { title: work.title, sub: work.category }) %>
+<section class="section">
+  <div class="container narrow">
+    <% if (work.image) { %><img class="detail-cover" src="<%= work.image %>" alt="<%= work.title %>"><% } %>
+    <% if (work.client) { %><p class="detail-meta">客戶：<%= work.client %></p><% } %>
+    <div class="prose"><%- work.description %></div>
+    <p><a href="/works" class="btn btn-outline">← 回作品集</a></p>
+  </div>
+</section>
+<% if (others.length) { %>
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head"><h2>其他作品</h2></div>
+    <%- include('_works', { works: others }) %>
+  </div>
+</section>
+<% } %>
+<%- include('../partials/footer') %>

@@ -1,0 +1,9 @@
+<div class="card-grid">
+  <% services.forEach(function (s) { %>
+    <article class="service-card reveal">
+      <% if (s.image) { %><img class="service-img" src="<%= s.image %>" alt="<%= s.title %>" loading="lazy"><% } else { %><div class="service-icon"><%= s.icon || '✦' %></div><% } %>
+      <h3><%= s.title %></h3>
+      <p><%- h.nl2br(s.description) %></p>
+    </article>
+  <% }) %>
+</div>

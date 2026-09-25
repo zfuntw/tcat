@@ -1,0 +1,6 @@
+<section class="page-head <%= (typeof image !== 'undefined' && image) ? 'has-image' : '' %>" <% if (typeof image !== 'undefined' && image) { %>style="background-image:url('<%= encodeURI(image) %>')"<% } %>>
+  <div class="container">
+    <% if (typeof sub !== 'undefined' && sub) { %><p class="eyebrow"><%= sub %></p><% } %>
+    <h1><%= title %></h1>
+  </div>
+</section>

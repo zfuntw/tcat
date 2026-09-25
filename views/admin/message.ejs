@@ -1,0 +1,19 @@
+<%- include('_top') %>
+<section class="panel">
+  <dl class="dl">
+    <dt>時間</dt><dd><%= new Date(msg.createdAt).toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }) %></dd>
+    <dt>姓名</dt><dd><%= msg.name %></dd>
+    <dt>Email</dt><dd><a href="mailto:<%= msg.email %>"><%= msg.email %></a></dd>
+    <dt>電話</dt><dd><%= msg.phone || '—' %></dd>
+    <dt>需求類型</dt><dd><%= msg.subject || '—' %></dd>
+    <dt>內容</dt><dd class="pre"><%= msg.message %></dd>
+  </dl>
+  <div class="save-bar">
+    <a class="btn" href="/admin/messages">← 返回</a>
+    <a class="btn primary" href="mailto:<%= msg.email %>?subject=<%= encodeURIComponent('回覆：' + (msg.subject || '您的詢問')) %>">以 Email 回覆</a>
+  </div>
+</section>
+<form method="post" action="/admin/messages/<%= msg.id %>/delete" data-confirm="確定刪除這則訊息？" class="danger-zone">
+  <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn danger">刪除訊息</button>
+</form>
+<%- include('_bottom') %>

@@ -1,0 +1,20 @@
+<%- include('_top') %>
+<div class="toolbar"><span class="muted">共 <%= messages.length %> 則</span><a class="btn" href="/admin/messages.csv">匯出 CSV</a></div>
+<div class="panel table-wrap">
+  <table>
+    <thead><tr><th>時間</th><th>姓名</th><th>Email</th><th>需求類型</th><th>內容</th></tr></thead>
+    <tbody>
+      <% if (!messages.length) { %><tr><td colspan="5" class="muted">尚無訊息</td></tr><% } %>
+      <% messages.forEach(function (m) { %>
+        <tr class="<%= m.read ? '' : 'unread' %>">
+          <td><%= h.formatDate(m.createdAt) %></td>
+          <td><a class="strong" href="/admin/messages/<%= m.id %>"><%= m.name %></a></td>
+          <td><%= m.email %></td>
+          <td><%= m.subject || '—' %></td>
+          <td class="clip"><%= m.message.slice(0, 40) %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('_bottom') %>

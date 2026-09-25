@@ -1,0 +1,93 @@
+<%- include('../partials/header') %>
+
+<section class="hero <%= home.heroImage ? 'has-image' : '' %>" <% if (home.heroImage) { %>style="background-image:url('<%= encodeURI(home.heroImage) %>')"<% } %>>
+  <div class="container hero-inner reveal">
+    <p class="eyebrow"><%= site.tagline %></p>
+    <h1><%- h.nl2br(home.heroTitle) %></h1>
+    <p class="hero-sub"><%- h.nl2br(home.heroSubtitle) %></p>
+    <div class="btn-row">
+      <% if (home.heroButtonText) { %><a class="btn btn-accent" href="<%= h.safeUrl(home.heroButtonUrl) %>"><%= home.heroButtonText %></a><% } %>
+      <% if (home.heroButton2Text) { %><a class="btn btn-ghost" href="<%= h.safeUrl(home.heroButton2Url) %>"><%= home.heroButton2Text %></a><% } %>
+    </div>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+</section>
+
+<% if (home.showAbout) { %>
+<section class="section">
+  <div class="container split reveal">
+    <div class="split-media">
+      <% if (home.aboutImage) { %><img src="<%= home.aboutImage %>" alt="<%= home.aboutTitle %>" loading="lazy"><% } else { %><div class="ph ph-tall"><span><%= site.siteName.slice(0, 1) %></span></div><% } %>
+    </div>
+    <div class="split-text">
+      <p class="eyebrow">ABOUT</p>
+      <h2><%= home.aboutTitle %></h2>
+      <p><%- h.nl2br(home.aboutText) %></p>
+      <% if (home.aboutButtonText) { %><a class="btn btn-outline" href="<%= h.safeUrl(home.aboutButtonUrl) %>"><%= home.aboutButtonText %> →</a><% } %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<% if (home.showStats && home.stats.length) { %>
+<section class="stats">
+  <div class="container stats-grid">
+    <% home.stats.forEach(function (s) { %>
+      <div class="stat reveal"><strong><%= s.number %></strong><span><%= s.label %></span></div>
+    <% }) %>
+  </div>
+</section>
+<% } %>
+
+<% if (home.showServices && services.length) { %>
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">SERVICES</p>
+      <h2><%= home.servicesTitle %></h2>
+      <p><%= home.servicesSubtitle %></p>
+    </div>
+    <%- include('_services', { services }) %>
+  </div>
+</section>
+<% } %>
+
+<% if (home.showWorks && works.length) { %>
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">WORKS</p>
+      <h2><%= home.worksTitle %></h2>
+      <p><%= home.worksSubtitle %></p>
+    </div>
+    <%- include('_works', { works }) %>
+    <div class="center"><a class="btn btn-outline" href="/works">看全部作品 →</a></div>
+  </div>
+</section>
+<% } %>
+
+<% if (home.showPosts && posts.length) { %>
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">JOURNAL</p>
+      <h2><%= home.postsTitle %></h2>
+      <p><%= home.postsSubtitle %></p>
+    </div>
+    <%- include('_posts', { posts, categoryOf }) %>
+    <div class="center"><a class="btn btn-outline" href="/blog">更多文章 →</a></div>
+  </div>
+</section>
+<% } %>
+
+<% if (home.showCta) { %>
+<section class="cta">
+  <div class="container reveal">
+    <h2><%= home.ctaTitle %></h2>
+    <p><%= home.ctaText %></p>
+    <% if (home.ctaButtonText) { %><a class="btn btn-accent" href="<%= h.safeUrl(home.ctaButtonUrl) %>"><%= home.ctaButtonText %></a><% } %>
+  </div>
+</section>
+<% } %>
+
+<%- include('../partials/footer') %>

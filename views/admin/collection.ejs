@@ -1,0 +1,20 @@
+<%- include('_top') %>
+<div class="toolbar"><span></span><a class="btn primary" href="/admin/<%= col %>/new">＋ 新增<%= label %></a></div>
+<div class="panel table-wrap">
+  <table>
+    <thead><tr><th style="width:90px">圖片</th><th>名稱</th><% if (col === 'works') { %><th>分類</th><th>首頁精選</th><% } %><th>排序</th><th></th></tr></thead>
+    <tbody>
+      <% if (!items.length) { %><tr><td colspan="6" class="muted">尚無資料</td></tr><% } %>
+      <% items.forEach(function (it) { %>
+        <tr>
+          <td><% if (it.image) { %><img class="thumb" src="<%= it.image %>" alt=""><% } else { %><span class="thumb ph"><%= it.icon || it.title.slice(0, 1) %></span><% } %></td>
+          <td><a class="strong" href="/admin/<%= col %>/<%= it.id %>"><%= it.title %></a></td>
+          <% if (col === 'works') { %><td><%= it.category %></td><td><%= it.featured ? '✓' : '' %></td><% } %>
+          <td><%= it.order %></td>
+          <td class="actions"><a href="/admin/<%= col %>/<%= it.id %>">編輯</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('_bottom') %>

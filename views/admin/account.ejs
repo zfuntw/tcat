@@ -1,0 +1,18 @@
+<%- include('_top') %>
+<section class="panel narrow">
+  <% if (user.mustChangePassword) { %><div class="flash error">目前使用預設密碼，請立即修改。</div><% } %>
+  <form method="post">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <div class="field"><label>帳號</label><input name="username" value="<%= user.username %>" autocomplete="username"></div>
+    <div class="field"><label>目前密碼 *</label><input type="password" name="current" required autocomplete="current-password"></div>
+    <div class="field"><label>新密碼（至少 8 碼，不改請留空）</label><input type="password" name="password" autocomplete="new-password"></div>
+    <div class="field"><label>確認新密碼</label><input type="password" name="confirm" autocomplete="new-password"></div>
+    <button class="btn primary">更新帳號</button>
+  </form>
+</section>
+<section class="panel narrow">
+  <h2>資料備份</h2>
+  <p class="muted">下載所有網站內容（不含密碼與圖片檔）的 JSON 備份。</p>
+  <a class="btn" href="/admin/backup.json">下載備份</a>
+</section>
+<%- include('_bottom') %>

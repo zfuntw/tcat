@@ -1,0 +1,35 @@
+</main>
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand"><%= site.siteName %></div>
+      <p><%- h.nl2br(site.footerText) %></p>
+      <div class="social">
+        <% if (site.lineUrl) { %><a href="<%= h.safeUrl(site.lineUrl) %>" target="_blank" rel="noopener">LINE</a><% } %>
+        <% if (site.facebookUrl) { %><a href="<%= h.safeUrl(site.facebookUrl) %>" target="_blank" rel="noopener">Facebook</a><% } %>
+        <% if (site.instagramUrl) { %><a href="<%= h.safeUrl(site.instagramUrl) %>" target="_blank" rel="noopener">Instagram</a><% } %>
+        <% if (site.youtubeUrl) { %><a href="<%= h.safeUrl(site.youtubeUrl) %>" target="_blank" rel="noopener">YouTube</a><% } %>
+      </div>
+    </div>
+    <div>
+      <h4>網站導覽</h4>
+      <ul class="footer-links">
+        <% (site.navItems || []).forEach(function (item) { %><li><a href="<%= h.safeUrl(item.url) %>"><%= item.label %></a></li><% }) %>
+      </ul>
+    </div>
+    <div>
+      <h4>聯絡資訊</h4>
+      <ul class="footer-contact">
+        <% if (site.email) { %><li>Email：<a href="mailto:<%= site.email %>"><%= site.email %></a></li><% } %>
+        <% if (site.phone) { %><li>電話：<a href="tel:<%= site.phone.replace(/[^\d+]/g, '') %>"><%= site.phone %></a></li><% } %>
+        <% if (site.address) { %><li>地址：<%= site.address %></li><% } %>
+        <% if (site.businessHours) { %><li>時間：<%= site.businessHours %></li><% } %>
+      </ul>
+    </div>
+  </div>
+  <div class="copyright"><%= String(site.copyright || '').replace('{year}', year) %></div>
+</footer>
+<% if (site.lineUrl) { %><a class="float-line" href="<%= h.safeUrl(site.lineUrl) %>" target="_blank" rel="noopener" aria-label="LINE 聯絡">LINE</a><% } %>
+<script src="/js/site.js"></script>
+</body>
+</html>
