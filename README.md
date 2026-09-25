@@ -6,7 +6,17 @@
 - 圖片上傳到 `public/uploads/`
 - 文章編輯器用 Quill，由本機提供，不依賴外部 CDN
 
-## 快速開始
+## 快速開始（不會寫程式也能用）
+
+1. 到 https://nodejs.org 下載並安裝 **LTS 版本**，安裝過程一路按「下一步」
+2. 下載這個專案並解壓縮（GitHub 頁面 → 綠色 Code 按鈕 → Download ZIP）
+3. 雙擊啟動檔：
+   - Windows：`start-windows.bat`
+   - Mac：`start-mac.command`（第一次若被擋，請按右鍵 →「打開」）
+4. 瀏覽器會自動打開後台 http://localhost:3000/admin
+5. 啟動視窗必須保持開著，關掉視窗網站就會停止
+
+## 快速開始（開發者）
 
 ```bash
 npm install
