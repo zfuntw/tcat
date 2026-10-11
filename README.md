@@ -33,9 +33,9 @@ npm start
 |---|---|---|
 | `PORT` | 網站埠號 | `3000` |
 | `NODE_ENV` | 設成 `production` 時 Cookie 只走 HTTPS，靜態檔也會快取 | — |
-| `SESSION_SECRET` | 登入 Session 加密金鑰。**正式環境必填**，沒設的話每次重啟都會登出 | 隨機 |
+| `SESSION_SECRET` | 登入 Session 加密金鑰 | 自動產生並存在 `DATA_DIR` |
 | `ADMIN_USER` / `ADMIN_PASSWORD` | 第一次啟動時建立的管理員帳密 | `admin` / `admin1234` |
-| `DATA_DIR` | 資料檔的存放目錄 | `./data` |
+| `DATA_DIR` | 資料檔的存放目錄；有設定時，上傳圖片會存在 `DATA_DIR/uploads` | `./data` |
 
 ## 前台頁面
 
@@ -75,11 +75,20 @@ npm start
 - 聯絡表單送出成功時，會同時送出 Meta `Lead`、GA4 `generate_lead`，以及 dataLayer 事件 `contact_form_submit`。事件送出後網址參數會被清掉，重新整理頁面不會重複算轉換
 - 其他追蹤碼（例如 LINE Tag）可以貼在「自訂 `<head>` 程式碼」
 
-## 部署注意事項
+## 部署到雲端（Zeabur）
 
-1. 伺服器上要保留 `data/` 和 `public/uploads/` 這兩個目錄。Render、Railway 這類平台要掛永久磁碟（Persistent Disk），不然每次重新部署內容都會消失
-2. 一定要設定 `SESSION_SECRET` 和 `NODE_ENV=production`，並且走 HTTPS
-3. 定期到「帳號設定 → 下載備份」備份內容。圖片請另外備份 `public/uploads/`
+1. 在 Zeabur 新增專案 → 選 GitHub → 選這個 repo 與分支
+2. 服務的 **Volumes** 分頁 → Mount Volumes，Mount Directory 填 `/data`
+3. 服務的 **Variables** 分頁新增：
+   - `DATA_DIR` = `/data`（資料檔、上傳圖片、登入狀態都會存在這顆磁碟）
+   - `NODE_ENV` = `production`
+   - `ADMIN_PASSWORD` = 你的後台密碼（至少 8 碼）
+4. **Networking** 分頁產生網域，例如 `xxx.zeabur.app`
+
+注意：
+- 沒掛 Volume 的話，每次重新部署，文章、圖片都會消失
+- `SESSION_SECRET` 沒設定時，系統會自動產生並存在 `DATA_DIR`
+- 定期到「帳號設定 → 下載備份」備份文字內容
 
 ## 新增後台欄位
 

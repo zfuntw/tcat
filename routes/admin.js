@@ -9,7 +9,7 @@ const { uniqueSlug, cleanHtml, cleanMapEmbed } = require('../lib/helpers');
 const forms = require('../lib/forms');
 
 const router = express.Router();
-const UPLOAD_DIR = path.join(__dirname, '..', 'public', 'uploads');
+const { UPLOAD_DIR } = require('../lib/paths');
 const IMAGE_EXT = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.ico'];
 
 const upload = multer({

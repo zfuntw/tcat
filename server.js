@@ -4,8 +4,23 @@ const express = require('express');
 const session = require('express-session');
 const db = require('./lib/db');
 const helpers = require('./lib/helpers');
+const fs = require('fs');
+const { UPLOAD_DIR, DATA_DIR } = require('./lib/paths');
+const FileStore = require('./lib/session-store');
 
 db.load();
+
+// 沒設定 SESSION_SECRET 時，自動產生一組並存在 DATA_DIR，重啟後沿用
+function loadSecret() {
+  const file = path.join(DATA_DIR, '.session-secret');
+  try {
+    return fs.readFileSync(file, 'utf8').trim();
+  } catch {
+    const secret = crypto.randomBytes(32).toString('hex');
+    fs.writeFileSync(file, secret, { mode: 0o600 });
+    return secret;
+  }
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,15 +31,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
 
-app.use(
-  express.static(path.join(__dirname, 'public'), {
-    maxAge: isProd ? '7d' : 0,
-    // 上傳的 SVG 禁止執行腳本
-    setHeaders: (res, filePath) => {
-      if (filePath.endsWith('.svg')) res.setHeader('Content-Security-Policy', "script-src 'none'");
-    }
-  })
-);
+const staticOpts = {
+  maxAge: isProd ? '7d' : 0,
+  // 上傳的 SVG 禁止執行腳本
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.svg')) res.setHeader('Content-Security-Policy', "script-src 'none'");
+  }
+};
+// 上傳圖片可放在 public 以外的目錄（雲端主機的永久磁碟）
+app.use('/uploads', express.static(UPLOAD_DIR, staticOpts));
+app.use(express.static(path.join(__dirname, 'public'), staticOpts));
 // 後台文章編輯器（Quill）由本機提供，不依賴外部 CDN
 app.use('/vendor/quill', express.static(path.join(__dirname, 'node_modules', 'quill', 'dist')));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
@@ -32,7 +48,8 @@ app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 app.use(
   session({
     name: 'sid',
-    secret: process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex'),
+    store: new FileStore(),
+    secret: process.env.SESSION_SECRET || loadSecret(),
     resave: false,
     saveUninitialized: false,
     cookie: { httpOnly: true, sameSite: 'lax', secure: isProd, maxAge: 1000 * 60 * 60 * 8 }
